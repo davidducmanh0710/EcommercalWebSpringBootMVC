@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<aside th:replace="~{common/header :: head}" />
+
+</head>
+<body>
+
+	<aside th:replace="~{common/header :: header}" />
+
+	<section class="section_gap">
+		<div class="container">
+			<h1 class="text-center text-info mt-5">GIỎ HÀNG</h1>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Mã sản phẩm</th>
+						<th>Tên sản phẩm</th>
+						<th>Đơn giá</th>
+						<th>Số lượng</th>
+						<th></th>
+					</tr>
+				</thead>
+				<div th:if="${session.containsKey('bag') and session.bag != null}">
+				<tbody>
+
+					<tr th:each="entry : ${session.bag.items}">
+						<!-- entry.key là key của Map, entry.value là giá trị tương ứng (đối tượng BagItems) -->
+						<td th:text="${entry.value.id}"></td>
+						<td th:text="${entry.value.name}"></td>
+						<td th:text="${entry.value.price}"></td>
+						<td th:text="${entry.value.quantity}"></td>
+					</tr>
+				</tbody>
+				</div>
+			</table>
+		</div>
+	</section>
+
+</body>
+
+</html>

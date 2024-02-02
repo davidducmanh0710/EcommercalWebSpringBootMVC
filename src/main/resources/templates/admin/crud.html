@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bootstrap CRUD Data Table for Database with Modal Form</title>
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+<link rel="apple-touch-icon" href="apple-icon.png">
+<link rel="shortcut icon" href="favicon.ico">
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/bootstrap/dist/css/bootstrap.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/font-awesome/css/font-awesome.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/themify-icons/css/themify-icons.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/flag-icon-css/css/flag-icon.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/selectFX/css/cs-skin-elastic.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/jqvmap/dist/jqvmap.min.css}">
+<link rel="stylesheet"
+	th:href="@{/public/resources/css/adminCss/assets/css/style.css}">
+<link
+	href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800'
+	rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/crud.css}">
+
+</head>
+<body>
+	<aside th:replace="~{common/adminLeftPanel :: left-panel-common}" />
+
+
+	<div id="right-panel" class="right-panel">
+
+
+		<header id="header" class="header">
+
+			<div class="header-menu">
+
+				<div class="col-sm-7">
+					<a id="menuToggle" class="menutoggle pull-left"><i
+						class="fa fa fa-tasks"></i></a>
+					<div class="header-left">
+						<button class="search-trigger">
+							<i class="fa fa-search"></i>
+						</button>
+						<div class="form-inline">
+							<form class="search-form">
+								<input class="form-control mr-sm-2" type="text"
+									placeholder="Search ..." aria-label="Search">
+								<button class="search-close" type="submit">
+									<i class="fa fa-close"></i>
+								</button>
+							</form>
+						</div>
+
+						<div class="dropdown for-notification">
+							<button class="btn btn-secondary dropdown-toggle" type="button"
+								id="notification" data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false">
+								<i class="fa fa-bell"></i> <span class="count bg-danger">5</span>
+							</button>
+
+						</div>
+
+						<div class="dropdown for-message">
+							<button class="btn btn-secondary dropdown-toggle" type="button"
+								id="message" data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false">
+								<i class="ti-email"></i> <span class="count bg-primary">9</span>
+							</button>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-5">
+					<div class="user-area dropdown float-right">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false"> <img
+							class="user-avatar rounded-circle" src="images/admin.jpg"
+							alt="User Avatar">
+						</a>
+
+						<div class="user-menu dropdown-menu">
+							<a class="nav-link" th:href="@{/admin-index/information-admin}"><i
+								class="fa fa-user"></i> My Profile</a> <a class="nav-link" href="#"><i
+								class="fa fa-user"></i> Notifications <span class="count">13</span></a>
+
+							<a class="nav-link" href="#"><i class="fa fa-cog"></i>
+								Settings</a>
+							<form th:action="@{/logout}" method="POST">
+								<button style="border: none" type="submit">
+									<a class="nav-link"><i class="fa fa-power-off"></i> Logout</a>
+								</button>
+							</form>
+						</div>
+					</div>
+
+					<div class="language-select dropdown" id="language-select">
+						<a class="dropdown-toggle" href="#" data-toggle="dropdown"
+							id="language" aria-haspopup="true" aria-expanded="true"> <i
+							class="flag-icon flag-icon-us"></i>
+						</a>
+						<div class="dropdown-menu" aria-labelledby="language"></div>
+					</div>
+
+				</div>
+			</div>
+
+		</header>
+
+
+
+
+		<div class="container">
+			<!-- USER -->
+
+			<div th:if="${entity == 'user'}">
+				<div class="table-responsive">
+					<div class="table-wrapper">
+						<div class="table-title">
+							<div class="row">
+								<div class="col-xs-6">
+									<h2>
+										Manage <b>Users</b>
+									</h2>
+								</div>
+								<div class="col-xs-6">
+									<a href="#addEmployeeModal" class="btn btn-success"
+										data-toggle="modal"><i class="material-icons">&#xE147;</i>
+										<span>Add New user</span></a> <a href="#deleteEmployeeModal"
+										class="btn btn-danger" data-toggle="modal"><i
+										class="material-icons">&#xE15C;</i> <span>Delete</span></a>
+								</div>
+							</div>
+						</div>
+						<table class="table table-striped table-hover">
+							<thead>
+								<tr>
+									<th><span class="custom-checkbox"> <input
+											type="checkbox" id="selectAll"> <label
+											for="selectAll"></label>
+									</span></th>
+									<th>ID</th>
+									<th>Username</th>
+									<th>Email</th>
+									<th>FirstName</th>
+									<th>LastName</th>
+									<th>Address</th>
+									<th>Phone</th>
+									<th>Country</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="tempUser : ${users}">
+									<td><span class="custom-checkbox"> <input
+											type="checkbox" id="checkbox1" name="options[]" value="1">
+											<label for="checkbox1"></label>
+									</span></td>
+
+									<td th:text="${tempUser.id}" />
+									<td th:text="${tempUser.username}" />
+									<td th:text="${tempUser.email}" />
+									<td
+										th:text="${tempUser.userDetail_Information.firstNameDetail}" />
+									<td th:text="${tempUser.userDetail_Information.lastNameDetail}" />
+									<td th:text="${tempUser.userDetail_Information.address}" />
+									<td th:text="${tempUser.userDetail_Information.phoneNumber}" />
+									<td th:text="${tempUser.userDetail_Information.country}" />
+
+									<td><a href="#editEmployeeModal" class="edit"
+										data-toggle="modal"> <i class="material-icons"
+											data-toggle="tooltip" title="Edit">&#xE254; </i></a> <a
+										href="#deleteEmployeeModal" class="delete" data-toggle="modal">
+											<i class="material-icons" data-toggle="tooltip"
+											title="Delete">&#xE872;</i>
+									</a></td>
+
+								</tr>
+
+							</tbody>
+						</table>
+						<div class="clearfix">
+							<div class="hint-text">
+								Showing <b>1</b> out of <b>1</b> entries
+							</div>
+							<ul class="pagination">
+								<li class="page-item disabled"><a href="#">Previous</a></li>
+								<li class="page-item"><a href="#" class="page-link">1</a></li>
+								<li class="page-item"><a href="#" class="page-link">Next</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Categories -->
+			<div th:if="${entity eq 'category'}">
+				<div class="table-responsive">
+					<div class="table-wrapper">
+						<div class="table-title">
+
+							<input name="checked" type="hidden" th:value="${checked}">
+
+							<div th:if="${checked eq 'success'}">
+								<div class="alert alert-info">You have successfully added
+									new category !</div>
+							</div>
+							
+							<div th:if="${checked eq 'editSuccess'}">
+								<div class="alert alert-info">You have successfully edited
+									category !</div>
+							</div>
+
+							<div th:if="${checked eq 'deleteSuccess'}">
+								<div class="alert alert-info">You have successfully
+									deleted this category !</div>
+							</div>
+
+							<div th:if="${checked eq 'failed'}">
+								<div class="alert alert-danger">Can not add duplicate
+									category !</div>
+							</div>
+
+
+
+							<div class="row">
+								<div class="col-xs-6">
+									<h2>
+										Manage <b>Categories</b>
+									</h2>
+								</div>
+
+
+								<div class="col-xs-6">
+									<a href="#addCategoryModal" class="btn btn-success"
+										data-toggle="modal"><i class="material-icons">&#xE147;</i>
+										<span>Add New Category</span></a> <a href="#deleteCategoryModal"
+										class="btn btn-danger" data-toggle="modal"><i
+										class="material-icons">&#xE15C;</i> <span>Delete</span></a>
+								</div>
+
+								<div style="padding-top: 20px" class="col-xs-12">
+									<form class="d-flex" th:action="@{/admin-index/data-table}">
+										<input th:value="${kw}" name="kw" class="form-control me-2"
+											type="text" placeholder="Search"> <input
+											th:value="${entity}" name="entity" class="form-control me-2"
+											type="hidden" placeholder="Search"> <input value="0"
+											name="page" class="form-control me-2" type="hidden"
+											placeholder="Search">
+
+										<button class="btn btn-primary" type="submit">Search</button>
+									</form>
+								</div>
+
+							</div>
+						</div>
+
+						<div
+							style="display: flex; justify-content: center; align-items: center"
+							th:if="${checked eq 'no-results'}">
+							<span class="photo media-left"><img alt="avatar"
+								th:src="@{/public/resources/css/productRender/img/no-results.png}"></span>
+						</div>
+
+						<table th:if="${checked != 'no-results'}"
+							class="table table-striped table-hover">
+							<thead>
+								<tr>
+									<th><span class="custom-checkbox"> <input
+											type="checkbox" id="selectAll"> <label
+											for="selectAll"></label>
+									</span></th>
+									<th>ID</th>
+									<th>Name</th>
+									<th>Parent Category name</th>
+
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="tempCategory : ${categories}">
+
+									<td><span class="custom-checkbox"> <input
+											type="checkbox" id="checkbox1" name="options[]" value="1">
+											<label for="checkbox1"></label>
+									</span></td>
+									
+									
+									<input type="hidden" th:value="${tempCategory.id}" class="tempCategoryId">
+									<input type="hidden" th:value="${tempCategory.name}" class="tempCategoryName">
+									
+									<td th:text="${tempCategory.id}">
+									<td th:text="${tempCategory.name}">
+									<td
+										th:text="${formatterColumn.categoryParentIdFormatter(tempCategory.parentId)}">
+									<td><a class="edit" data-toggle="modal"
+										data-target="#editCategoryModal"> <i
+											 class="material-icons editCategoryModaIcon" title="Edit">&#xE254;
+										</i></a> <a
+										th:href="@{/deleteCategories(categoryId = ${tempCategory.id} 
+									, entity = ${entity} 
+									, size = ${size}
+									, page = ${page})}"
+										class="delete"
+										onclick="if(!(confirm('Are you sure you want to delete this item ?'))) 
+								 return false ">
+											<i class="material-icons" data-toggle="tooltip"
+											title="Delete">&#xE872;</i>
+									</a></td>
+
+								</tr>
+
+							</tbody>
+						</table>
+						<div class="clearfix">
+							<div class="hint-text">
+								Quantity : <b th:text="${quantity}"></b> entries
+							</div>
+							<aside th:replace="common/paginationCRUD :: pagination-common" />
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Origin -->
+			<div th:if="${entity eq 'origin'}">
+				<div class="table-responsive">
+					<div class="table-wrapper">
+						<div class="table-title">
+
+							<input name="checked" type="hidden" th:value="${checked}">
+
+							<div th:if="${checked eq 'success'}">
+								<div class="alert alert-info">You have successfully added
+									new category !</div>
+							</div>
+
+							<div th:if="${checked eq 'deleteSuccess'}">
+								<div class="alert alert-info">You have successfully
+									deleted this category !</div>
+							</div>
+
+							<div th:if="${checked eq 'failed'}">
+								<div class="alert alert-danger">Can not add duplicate
+									category !</div>
+							</div>
+
+
+
+							<div class="row">
+								<div class="col-xs-6">
+									<h2>
+										Manage <b>Origins</b>
+									</h2>
+								</div>
+
+
+								<div class="col-xs-6">
+									<a href="#addOriginModal" class="btn btn-success"
+										data-toggle="modal"><i class="material-icons">&#xE147;</i>
+										<span>Add New Origin</span></a> <a href="#deleteCategoryModal"
+										class="btn btn-danger" data-toggle="modal"><i
+										class="material-icons">&#xE15C;</i> <span>Delete</span></a>
+								</div>
+
+								<div style="padding-top: 20px" class="col-xs-12">
+									<form class="d-flex" th:action="@{/admin-index/data-table}">
+										<input th:value="${kw}" name="kw" class="form-control me-2"
+											type="text" placeholder="Search"> <input
+											th:value="${entity}" name="entity" class="form-control me-2"
+											type="hidden" placeholder="Search"> <input value="0"
+											name="page" class="form-control me-2" type="hidden"
+											placeholder="Search">
+
+										<button class="btn btn-primary" type="submit">Search</button>
+									</form>
+								</div>
+
+							</div>
+						</div>
+
+						<div
+							style="display: flex; justify-content: center; align-items: center"
+							th:if="${checked eq 'no-results'}">
+							<span class="photo media-left"><img alt="avatar"
+								th:src="@{/public/resources/css/productRender/img/no-results.png}"></span>
+						</div>
+
+						<table th:if="${checked != 'no-results'}"
+							class="table table-striped table-hover">
+							<thead>
+								<tr>
+									<th><span class="custom-checkbox"> <input
+											type="checkbox" id="selectAll"> <label
+											for="selectAll"></label>
+									</span></th>
+									<th>ID</th>
+									<th>Name</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="tempOrigin : ${origins}">
+
+									<td><span class="custom-checkbox"> <input
+											type="checkbox" id="checkbox1" name="options[]" value="1">
+											<label for="checkbox1"></label>
+									</span></td>
+
+									<td th:text="${tempOrigin.id}">
+									<td th:text="${tempOrigin.name}">
+									<td><a href="#editCategoryModal" class="edit"
+										data-toggle="modal"> <i class="material-icons"
+											data-toggle="tooltip" title="Edit">&#xE254; </i></a> <a
+										th:href="@{/deleteOrigines(originId = ${tempOrigin.id} 
+									, entity = ${entity} 
+									, size = ${size}
+									, page = ${page})}"
+										class="delete"
+										onclick="if(!(confirm('Are you sure you want to delete this item ?'))) 
+								 return false ">
+											<i class="material-icons" data-toggle="tooltip"
+											title="Delete">&#xE872;</i>
+									</a></td>
+
+								</tr>
+
+							</tbody>
+						</table>
+						<div class="clearfix">
+							<div class="hint-text">
+								Quantity : <b th:text="${quantity}"></b> entries
+							</div>
+							<aside th:replace="common/paginationCRUD :: pagination-common" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+	<!-- Edit Modal HTML -->
+
+	<!-- ADD USER -->
+	<div id="addEmployeeModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">
+						<h4 class="modal-title">Add Employee</h4>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label>Name</label> <input type="text" class="form-control"
+								required>
+						</div>
+						<div class="form-group">
+							<label>Email</label> <input type="email" class="form-control"
+								required>
+						</div>
+						<div class="form-group">
+							<label>Address</label>
+							<textarea class="form-control" required></textarea>
+						</div>
+						<div class="form-group">
+							<label>Phone</label> <input type="text" class="form-control"
+								required>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-dismiss="modal"
+							value="Cancel"> <input type="submit"
+							class="btn btn-success" value="Add">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Add Category -->
+	<div id="addCategoryModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form th:action="@{/saveCategories}" method="post">
+					<div class="modal-header">
+						<h4 class="modal-title">Add Category</h4>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label>Name</label> 
+							<input name="name" type="text"
+								class="form-control" required> 
+							<input
+								th:value="${entity}" name="entity" type="hidden"
+								class="form-control"> 
+							<input th:value="${page}"
+								name="page" type="hidden" class="form-control"> 
+								<label>Parent
+								Category ID</label> 
+							<input list="category_list" name="parent_category"
+								id="parent_category_id" class="form-control" required>
+							<datalist id="category_list">
+								<option th:value="${0}">None parent</option>
+								<option th:each="c : ${allCategories}" th:value="${c.id}"
+									th:text="${c.name}"></option>
+							</datalist>
+						</div>
+
+						<div class="modal-footer">
+							<input type="button" class="btn btn-default" data-dismiss="modal"
+								value="Cancel"> <input type="submit"
+								class="btn btn-success" value="Add">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- ADD Origin -->
+	<div id="addOriginModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form th:action="@{/saveOrigines}" method="post">
+					<div class="modal-header">
+						<h4 class="modal-title">Add Category</h4>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label>Name</label> <input name="name" type="text"
+								class="form-control" required> <input
+								th:value="${entity}" name="entity" type="hidden"
+								class="form-control"> <input th:value="${page}"
+								name="page" type="hidden" class="form-control">
+
+						</div>
+
+						<div class="modal-footer">
+							<input type="button" class="btn btn-default" data-dismiss="modal"
+								value="Cancel"> <input type="submit"
+								class="btn btn-success" value="Add">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- Edit Modal HTML -->
+	<!-- Edit USER HTML -->
+
+	<div id="editEmployeeModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">
+						<h4 class="modal-title">Edit Employee</h4>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label>Name</label> <input type="text" class="form-control"
+								required>
+						</div>
+						<div class="form-group">
+							<label>Email</label> <input type="email" class="form-control"
+								required>
+						</div>
+						<div class="form-group">
+							<label>Address</label>
+							<textarea class="form-control" required></textarea>
+						</div>
+						<div class="form-group">
+							<label>Phone</label> <input type="text" class="form-control"
+								required>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-dismiss="modal"
+							value="Cancel"> <input type="submit" class="btn btn-info"
+							value="Save">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- Edit Category HTML -->
+
+	<div id="editCategoryModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form id="editCategoryForm" th:action="@{/editCategories}" method="POST">
+					<div class="modal-header">
+						<h4 class="modal-title">Edit Category</h4>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">
+
+						<input id="category_id_hidden" type="hidden" name="category_id">
+						<input th:value="${entity}" name="entity" type="hidden"
+							class="form-control"> 
+						<input th:value="${page}" name="page"
+							type="hidden" class="form-control">
+
+						<div class="form-group">
+							<label>Name</label> <input type="text" class="form-control editInputCategoryAutoFill"
+								required name="category_name">
+						</div>
+
+						<label>Parent Category ID</label> <input list="category_list"
+							name="parent_category" id="parent_category_id"
+							class="form-control" required>
+						<datalist id="category_list">
+							<option th:value="${0}">None parent</option>
+							<option th:each="c : ${categories}" th:value="${c.id}"
+								th:text="${c.name}"></option>
+						</datalist>
+
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-dismiss="modal"
+							value="Cancel"> <input type="submit" class="btn btn-info"
+							value="Save">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- Delete Modal HTML -->
+
+	<!-- Delete Employee -->
+
+	<div id="deleteEmployeeModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">
+						<h4 class="modal-title">Delete Employee</h4>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to delete these Records?</p>
+						<p class="text-warning">
+							<small>This action cannot be undone.</small>
+						</p>
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-dismiss="modal"
+							value="Cancel"> <input type="submit"
+							class="btn btn-danger" value="Delete">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- Delete Categories -->
+
+	<div id="deleteCategoryModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<form>
+
+					<input th:value="${entity}" name="entity" type="hidden"
+						class="form-control">
+
+					<div class="modal-header">
+						<h4 class="modal-title">Delete Category</h4>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to delete these Records?</p>
+						<p class="text-warning">
+							<small>This action cannot be undone.</small>
+						</p>
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-dismiss="modal"
+							value="Cancel"> <input type="submit"
+							class="btn btn-danger" value="Delete">
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+
+	<!-- 	Java script -->
+
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/jquery/dist/jquery.min.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/popper.js/dist/umd/popper.min.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+	<script th:src="@{/public/resources/css/adminCss/assets/js/main.js}"></script>
+
+
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/chart.js/dist/Chart.bundle.min.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/assets/js/dashboard.js}"></script>
+	<script th:src="@{/public/resources/css/adminCss/assets/js/widgets.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/jqvmap/dist/jquery.vmap.min.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/jqvmap/dist/maps/jquery.vmap.world.js}"></script>
+
+	<script th:src="@{/public/resources/js/crud.js}"></script>
+
+
+
+</body>
+</html>

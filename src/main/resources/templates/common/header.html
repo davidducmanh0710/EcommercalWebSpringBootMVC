@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http:/www.thymeleaf.org">
+
+
+<head>
+
+<div th:fragment="head">
+	<title>Footwear - Free Bootstrap 4 Template by Colorlib</title>
+	<meta charset="utf-8">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link
+		href="https:/fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700"
+		rel="stylesheet">
+	<link
+		href="https:/fonts.googleapis.com/css?family=Rokkitt:100,300,400,700"
+		rel="stylesheet">
+
+	<!-- Animate.css -->
+	<link rel="stylesheet"
+		th:href="@{/public/resources/shoes-master/css/animate.css}">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet"
+		th:href="@{/public/resources/shoes-master/css/icomoon.css}">
+	<!-- Ion Icon Fonts-->
+	<link rel="stylesheet"
+		th:href="@{/public/resources/shoes-master/css/ionicons.min.css}">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet"
+		th:href="@{/public/resources/shoes-master/css/bootstrap.min.css}">
+
+	<!-- Magnific Popup -->
+	<link rel="stylesheet"
+		th:href="@{/public/resources/shoes-master/css/magnific-popup.css}">
+
+	<!-- Flexslider  -->
+	<link rel="stylesheet"
+		th:href="@{/public/resources/shoes-master/css/flexslider.css}">
+
+	<!-- Owl Carousel -->
+	<link rel="stylesheet"
+		th:href="@{/public/resources/shoes-master/css/owl.carousel.min.css}">
+	<link rel="stylesheet"
+		th:href="@{/public/resources/shoes-master/css/owl.theme.default.min.css}">
+
+	<!-- Date Picker -->
+	<link rel="stylesheet"
+		th:href="@{/public/resources/shoes-master/css/bootstrap-datepicker.css}">
+	<!-- Flaticons  -->
+	<link rel="stylesheet"
+		th:href="@{/public/resources/shoes-master/fonts/flaticon/font/flaticon.css}">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet"
+		th:href="@{/public/resources/shoes-master/css/style.css}">
+
+	<script defer
+		th:src="@{/public/resources/shoes-master/js/jquery.min.js}"></script>
+	<!-- popper -->
+	<script defer
+		th:src="@{/public/resources/shoes-master/js/popper.min.js}"></script>
+	<!-- bootstrap 4.1 -->
+	<script defer
+		th:src="@{/public/resources/shoes-master/js/bootstrap.min.js}"></script>
+	<!-- jQuery easing -->
+	<script defer
+		th:src="@{/public/resources/shoes-master/js/jquery.easing.1.3.js}"></script>
+	<!-- Waypoints -->
+	<script defer
+		th:src="@{/public/resources/shoes-master/js/jquery.waypoints.min.js}"></script>
+	<!-- Flexslider -->
+	<script defer
+		th:src="@{/public/resources/shoes-master/js/jquery.flexslider-min.js}"></script>
+	<!-- Owl carousel -->
+	<script defer
+		th:src="@{/public/resources/shoes-master/js/owl.carousel.min.js}"></script>
+	<!-- Magnific Popup -->
+	<script defer
+		th:src="@{/public/resources/shoes-master/js/jquery.magnific-popup.min.js}"></script>
+	<script defer
+		th:src="@{/public/resources/shoes-master/js/magnific-popup-options.js}"></script>
+	<!-- Date Picker -->
+	<script defer
+		th:src="@{/public/resources/shoes-master/js/bootstrap-datepicker.js}"></script>
+	<!-- Stellar Parallax -->
+	<script defer
+		th:src="@{/public/resources/shoes-master/js/jquery.stellar.min.js}"></script>
+	<!-- Main -->
+	<script defer th:src="@{/public/resources/shoes-master/js/main.js}"></script>
+
+
+</div>
+
+</head>
+
+<div th:fragment="header">
+	<!-- Start Header Area -->
+	<nav class="colorlib-nav" role="navigation">
+		<div class="top-menu">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-7 col-md-9">
+						<div id="colorlib-logo">
+							<a th:href="@{/user}">Footwear</a>
+						</div>
+					</div>
+					<div class="col-sm-5 col-md-3">
+						<form action="#" class="search-wrap">
+							<div class="form-group">
+								<input type="search" class="form-control search"
+									placeholder="Search">
+								<button class="btn btn-primary submit-search text-center"
+									type="submit">
+									<i class="icon-search"></i>
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12 text-left menu-1">
+						<ul>
+							<li class="active"><a th:href="@{/user}">Home</a></li>
+							<li class="has-dropdown"><a th:href="@{#}">Men</a>
+								<ul class="dropdown">
+									<li><a th:href="@{#}">Product Detail</a></li>
+									<li><a th:href="@{#}">Shopping Bag</a></li>
+									<li><a th:href="@{#}">Checkout</a></li>
+									<li><a th:href="@{#}">Order Complete</a></li>
+									<li><a th:href="@{#}">Wishlist</a></li>
+								</ul></li>
+							<li><a th:href="@{#}">Women</a></li>
+							<li><a th:href="@{#}">About</a></li>
+							<li><a th:href="@{#}">Contact</a></li>
+							<li class="cart"><a th:href="@{/user/bag}"><i
+									class="icon-shopping-cart"></i> Bag [0]</a></li>
+							<li class="has-dropdown"><a th:href="@{#}">Vendor</a>
+								<ul class="dropdown">
+								<div th:if="${isVender == 'false'}">
+									<li><a th:href="@{/user/active-vendor}">Active vendor</a></li>
+								</div>	
+									<li><a th:href="@{/vendor}">Your shop</a></li>
+
+								</ul></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="sale">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-8 offset-sm-2 text-center">
+						<div class="row">
+							<div class="owl-carousel2">
+								<div class="item">
+									<div class="col">
+										<h3>
+											<a th:href="@{#}">25% off (Almost) Everything! Use Code:
+												Summer Sale</a>
+										</h3>
+									</div>
+								</div>
+								<div class="item">
+									<div class="col">
+										<h3>
+											<a th:href="@{#}">Our biggest sale yet 50% off all summer
+												shoes</a>
+										</h3>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+
+
+</div>
+
+
+
+
+</html>

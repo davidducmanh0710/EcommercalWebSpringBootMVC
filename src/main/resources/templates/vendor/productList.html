@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Product List</title>
+<meta name="description" content="Sufee Admin - HTML5 Admin Template">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="apple-touch-icon" href="apple-icon.png">
+<link rel="shortcut icon" href="favicon.ico">
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/bootstrap/dist/css/bootstrap.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/font-awesome/css/font-awesome.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/themify-icons/css/themify-icons.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/flag-icon-css/css/flag-icon.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/selectFX/css/cs-skin-elastic.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/jqvmap/dist/jqvmap.min.css}">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+	integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	th:href="@{/public/resources/css/adminCss/assets/css/style.css}">
+
+<link
+	href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800'
+	rel='stylesheet' type='text/css'>
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+	integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+	integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+	crossorigin="anonymous"></script>
+
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+	crossorigin="anonymous"></script>
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/vendor/main.css}">
+
+
+
+</head>
+<body>
+
+	<aside th:replace="common/vendorLeftPanel :: left-panel-common" />
+
+	<div id="right-panel" class="right-panel mx-2">
+
+		<div
+			class="container mt-4 border border-black rounded border-custom1 shadow-lg">
+			<form>
+				<div
+					class="form-row d-flex justify-content-center align-items-center">
+					<div class="col-md-3 mb-3">
+						<label class="font-weight-bold" for="name">Name :</label> <input
+							type="text" class="form-control" id="name"
+							placeholder="Input name">
+					</div>
+					<div class="col-md-3 mb-3">
+						<label class="font-weight-bold" for="id">ID:</label> <input
+							type="text" class="form-control" id="id" placeholder="Input ID">
+					</div>
+
+				</div>
+				<div
+					class="form-row d-flex justify-content-center align-items-center">
+					<div class="col-md-3 mb-3">
+						<label class="font-weight-bold" for="origin">Origin :</label> <select
+							class="form-control" id="origin">
+							<option value="">Choose one origin :</option>
+							<option th:each="tempOrigin : ${origins}"
+								th:value="${tempOrigin.name}" th:text="${tempOrigin.name}"></option>
+						</select>
+					</div>
+					<div class="col-md-3 mb-3">
+						<label class="font-weight-bold" for="danhmuc">Category :</label> <select
+							class="form-control" id="danhmuc">
+							<option value="">Choose one category :</option>
+							<option th:each="tempCat : ${categories}"
+								th:value="${tempCat.name}" th:text="${tempCat.name}"></option>
+						</select>
+					</div>
+				</div>
+				<div
+					class="form-row d-flex justify-content-center align-items-center">
+					<div class="col-md-3 mb-3">
+						<button class="btn btn-primary " type="submit">Search</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+
+
+		<div
+			class="container mt-4 border border-black rounded border-custom1 shadow-lg">
+
+			<div class="container mt-5">
+				<ul class="nav nav-tabs" id="myTabs">
+					<li class="nav-item"><a class="nav-link active" id="tab1"
+						data-toggle="tab" href="#content1">ALL</a></li>
+					<li class="nav-item"><a class="nav-link" id="tab2"
+						data-toggle="tab" href="#content2">Tab 1</a></li>
+					<li class="nav-item"><a class="nav-link" id="tab3"
+						data-toggle="tab" href="#content3">Tab 2</a></li>
+				</ul>
+				<div
+					class="container mt-3 d-flex justify-content-center align-items-center">
+
+					<div class="container mt-3">
+						<p class="font-weight-bold">... Products</p>
+
+						<div class="progress col-4">
+							<div class="progress-bar" role="progressbar" style="width: 25%;"
+								aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+
+						</div>
+					</div>
+
+					<div class="container mt-3">
+						<a th:href="@{/vendor/product/new}">
+							<button type="button" class="btn btn-add">
+								<i class="fa-solid fa-plus"></i> Add new product
+							</button>
+						</a>
+					</div>
+				</div>
+				<div class="tab-content mt-4">
+					<div class="tab-pane fade show active" id="content1">
+
+						<div
+							class="container mt-5 d-flex justify-content-center align-items-center">
+							<table class="table">
+								<thead>
+									<tr>
+										<th class="text-center">Image</th>
+										<th class="text-center">Product name</th>
+										<th class="text-center">Category</th>
+										<th class="text-center">Origin</th>
+										<th class="text-center">Price</th>
+										<th class="text-center">Update or Delete Product</th>
+
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="tempProduct : ${products}">
+
+										<td class="col-2 text-center"><img
+											th:src="${tempProduct.image}"></td>
+
+										<td class="col-2 text-center" th:text="${tempProduct.name}" />
+										<td class="col-2 text-center"
+											th:text="${tempProduct.category.name}" />
+										<td class="col-2 text-center"
+											th:text="${tempProduct.productDetail_Infor.origin.name}" />
+										<td class="col-2 text-center"
+											th:text="${tempProduct.price}" />
+
+
+										<td class="col-2 text-center">
+											<a href="#" class="edit"
+											data-toggle="modal"> <i class="fa-solid fa-pen-to-square"></i></a>
+											<a
+											onclick="if(!(confirm('Are you sure you want to delete this item ?'))) 
+								 			return false "
+											th:href="@{/vendor/product/all/deleteProducts/{productID}(productID = ${tempProduct.id})}">
+												<i class="fa-solid fa-trash"></i>
+										</a></td>
+
+									</tr>
+
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="content2">
+						<p>Content of Tab 2</p>
+					</div>
+					<div class="tab-pane fade" id="content3">
+						<p>Content of Tab 3</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/jquery/dist/jquery.min.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/popper.js/dist/umd/popper.min.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+	<script th:src="@{/public/resources/css/adminCss/assets/js/main.js}"></script>
+
+
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/chart.js/dist/Chart.bundle.min.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/assets/js/dashboard.js}"></script>
+	<script th:src="@{/public/resources/css/adminCss/assets/js/widgets.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/jqvmap/dist/jquery.vmap.min.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/jqvmap/dist/maps/jquery.vmap.world.js}"></script>
+	<script>
+		(function($) {
+			"use strict";
+
+			jQuery('#vmap').vectorMap({
+				map : 'world_en',
+				backgroundColor : null,
+				color : '#ffffff',
+				hoverOpacity : 0.7,
+				selectedColor : '#1de9b6',
+				enableZoom : true,
+				showTooltip : true,
+				values : sample_data,
+				scaleColors : [ '#1de9b6', '#03a9f5' ],
+				normalizeFunction : 'polynomial'
+			});
+		})(jQuery);
+	</script>
+
+</body>
+</html>

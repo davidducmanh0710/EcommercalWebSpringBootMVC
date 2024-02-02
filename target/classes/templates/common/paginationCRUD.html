@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bootstrap CRUD Data Table for Database with Modal Form</title>
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+<link rel="apple-touch-icon" href="apple-icon.png">
+<link rel="shortcut icon" href="favicon.ico">
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/bootstrap/dist/css/bootstrap.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/font-awesome/css/font-awesome.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/themify-icons/css/themify-icons.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/flag-icon-css/css/flag-icon.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/selectFX/css/cs-skin-elastic.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/jqvmap/dist/jqvmap.min.css}">
+<link rel="stylesheet"
+	th:href="@{/public/resources/css/adminCss/assets/css/style.css}">
+<link
+	href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800'
+	rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/crud.css}">
+
+</head>
+<body>
+
+ <aside th:fragment="pagination-common">
+	<ul class="pagination">
+
+		<li class="page-item"><a
+			th:if="${page != 0 && maxPage > 2 && checked != 'no-results'}"
+			th:href="@{/previousPage
+						(entity = ${entity} ,
+						 page = ${page} ,
+						 kw = ${kw})}"
+			class="page-link"> Previous </a></li>
+
+		<li
+			th:if="${page >= halfPage && maxPage > 2 && checked != 'no-results'}"
+			class="page-item"><a
+			th:href="@{/admin-index/data-table
+						(entity = ${entity} ,
+						 page = 0 ,
+						 kw = ${kw})}"
+			class="page-link"> <b>1</b>
+		</a></li>
+
+
+		<li
+			th:if="${maxPage <= 2 && halfPage != maxPage && checked != 'no-results'}"
+			th:each="i: ${#numbers.sequence(0, maxPage)}" class="page-item">
+			<a
+			th:href="@{/admin-index/data-table
+						(entity = ${entity} ,
+						 page = ${i},
+						 kw = ${kw})}"
+			class="page-link"> <b th:text="${i + 1}"></b>
+		</a>
+		</li>
+
+		<li
+			th:if="${page < halfPage && maxPage > 2 && checked != 'no-results'}"
+			th:each="i: ${#numbers.sequence(0, halfPage)}" class="page-item"><a
+			th:href="@{/admin-index/data-table(entity = ${entity} ,
+						 page = ${i},
+						 kw = ${kw})}"
+			class="page-link"> <b th:text="${i + 1}"></b>
+		</a></li>
+
+
+		<li
+			th:if="${page >= halfPage && maxPage > 2 && checked != 'no-results'}"
+			class="page-item"><p>....</p></li>
+
+		<li
+			th:if="${page >= halfPage && maxPage > 2 && checked != 'no-results'}"
+			th:each="i: ${#numbers.sequence(halfPage, maxPage)}"
+			class="page-item"><a
+			th:href="@{/admin-index/data-table(entity = ${entity} ,
+									 page = ${i},
+									 kw = ${kw})}"
+			class="page-link"> <b th:text="${i + 1}"></b>
+		</a></li>
+
+
+		<li
+			th:if="${page < halfPage && maxPage > 2 && checked != 'no-results'}"
+			class="page-item"><p>....</p></li>
+
+		<li
+			th:if="${page < halfPage && maxPage > 2 && checked != 'no-results'}"
+			class="page-item"><a
+			th:href="@{/admin-index/data-table
+						(entity = ${entity} ,
+						 page = ${maxPage} ,
+						 kw = ${kw})}"
+			class="page-link"> <b th:text="${maxPage + 1}"></b>
+		</a></li>
+
+
+		<li
+			th:if="${page != maxPage && maxPage > 2 && checked != 'no-results'}"
+			class="page-item"><a
+			th:href="@{/nextPage(entity = ${entity} 
+									, page = ${page}
+									, kw = ${kw})}"
+			class="page-link"> Next </a></li>
+
+
+
+	</ul></aside>
+
+
+	<!-- 	Java script -->
+
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/jquery/dist/jquery.min.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/popper.js/dist/umd/popper.min.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+	<script th:src="@{/public/resources/css/adminCss/assets/js/main.js}"></script>
+
+
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/chart.js/dist/Chart.bundle.min.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/assets/js/dashboard.js}"></script>
+	<script th:src="@{/public/resources/css/adminCss/assets/js/widgets.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/jqvmap/dist/jquery.vmap.min.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/jqvmap/dist/maps/jquery.vmap.world.js}"></script>
+
+	<script th:src="@{/public/resources/js/crud.js}"></script>
+
+
+
+</body>
+</html>

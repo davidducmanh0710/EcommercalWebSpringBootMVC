@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Personal information</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
+
+<link type="text/css" rel="stylesheet"
+	th:href="@{/public/resources/css/userInfor.css}">
+
+</head>
+<body>
+
+	<section class="vh-100 gradient-custom">
+		<div class="container py-5 h-100">
+			<div class="row justify-content-center align-items-center h-100">
+				<div class="col-12 col-lg-9 col-xl-7">
+					<div class="card shadow-2-strong card-registration"
+						style="border-radius: 15px;">
+						<div class="card-body p-4 p-md-5">
+							<h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Information Form</h3>
+
+							<form action="#"
+								th:action="@{/information-register/saveDetailUsers}"
+								method="POST">
+
+								<input type="hidden" th:field="${userDto.email}">
+
+								<!-- <input type="hidden" th:field="${userDetail.user}" > -->
+								<div class="row">
+									<div class="col-md-6 mb-4">
+
+										<div class="form-outline">
+											<label class="form-label" for="firstName">First Name</label>
+											<input th:field="${userDetail.firstNameDetail}"
+												class="form-control form-control-lg" readonly="readonly" />
+
+										</div>
+
+									</div>
+									<div class="col-md-6 mb-4">
+
+										<div class="form-outline">
+											<label class="form-label" for="lastName">Last Name</label> <input
+												th:field="${userDetail.lastNameDetail}"
+												class="form-control form-control-lg" readonly="readonly" />
+										</div>
+
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-6 mb-4 d-flex align-items-center">
+
+										<div class="form-outline datepicker w-100">
+											<label for="birthdayDate" class="form-label">Birthday</label>
+											<input required="required"
+												th:field="${userDetail.dateOfBirth}" type="date"
+												min='1918-01-01' max='2018-01-01'
+												class="form-control form-control-lg" id="birthdayDate" />
+										</div>
+
+									</div>
+									<div class="col-md-6 mb-4">
+
+										<h6 class="mb-2 pb-1">Gender:</h6>
+
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="radio"
+												name="inlineRadioOptions" id="maleGender" value="Male" /> <label
+												class="form-check-label" for="maleGender">Male</label>
+										</div>
+
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="radio"
+												name="inlineRadioOptions" id="femaleGender" value="Female" />
+											<label class="form-check-label" for="femaleGender">Female</label>
+										</div>
+
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="radio"
+												name="inlineRadioOptions" id="otherGender" value="Other" />
+											<label class="form-check-label" for="otherGender">Other</label>
+										</div>
+
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-6 mb-4 pb-2">
+
+										<div class="form-outline">
+											<label class="form-label" for="emailAddress">Email</label> <input
+												th:field="${userDetail.emailDetail}"
+												class="form-control form-control-lg" readonly="readonly" />
+										</div>
+
+									</div>
+									<div class="col-md-6 mb-4 pb-2">
+
+										<div class="form-outline">
+											<label class="form-label" for="phoneNumber">Phone
+												Number</label> <input th:field="${userDetail.phoneNumber}"
+												type="tel" id="phoneNumber"
+												class="form-control form-control-lg" />
+										</div>
+
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-12">
+
+										<div class="form-outline">
+											<label class="form-label" for="address">Address</label> <input
+												th:field="${userDetail.address}" type="text" id="address"
+												class="form-control form-control-lg" />
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+
+									<div class="col-12">
+
+										<div class="form-outline">
+											<label class="form-label" for="address">Country</label> <select
+												class="form-select" aria-label="Disabled select example"
+												name="country">
+												<option selected>Select your country</option>
+												<option value="America">America</option>
+												<option value="Argentina">Argentina</option>
+												<option value="China">China</option>
+												<option value="India">India</option>
+												<option value="Japan">Japan</option>
+												<option value="France">France</option>
+												<option value="Portugal">Portugal</option>
+												<option value="Viet Nam">Viet Nam</option>
+
+
+											</select>
+
+
+										</div>
+									</div>
+								</div>
+
+
+								<div class="mt-4 pt-2"
+									style="display: flex; flex-direction: row; justify-content: space-around;">
+									<div>
+										<a th:href="@{/register-form?success}">Skip this step</a>
+									</div>
+									<div>
+										<input class="btn btn-primary btn-lg" type="submit"
+											value="Submit" />
+									</div>
+								</div>
+
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

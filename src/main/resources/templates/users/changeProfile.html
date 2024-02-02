@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title> Update Profile </title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+          
+    <link type="text/css" rel="stylesheet" th:href="@{/public/resources/css/userInfor.css}">
+    <script type="text/javascript" th:src="@{/public/resources/js/main.js}" defer ></script>   
+</head>
+<body>
+
+	<section class="vh-100 gradient-custom">
+  <div class="container py-5 h-100">
+  
+   <div class="row">
+      <div class="col">
+        <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a th:href="@{/user/information-users}">User profile</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a>Update Profile</a></li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col-12 col-lg-9 col-xl-7">
+        <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+          <div class="card-body p-4 p-md-5">
+            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Information Form</h3>
+            
+            <form action="#" th:action="@{/information-users/updateDetailUsers}" method="POST" th:object="${userDetailInfor}">
+
+			<input th:field="*{id}" type="hidden" id="id" class="form-control form-control-lg" />
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+
+                  <div class="form-outline">
+                   <label class="form-label" for="firstName">First Name</label>
+                    <input th:field="*{firstNameDetail}" type="text" id="firstName" class="form-control form-control-lg"  />
+                   
+                  </div>
+
+                </div>
+                <div class="col-md-6 mb-4">
+
+                  <div class="form-outline">
+                    <label class="form-label" for="lastName">Last Name</label>
+                    <input th:field="*{lastNameDetail}" type="text" id="lastName" class="form-control form-control-lg"  />
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4 d-flex align-items-center">
+
+                  <div class="form-outline datepicker w-100">
+                    <label for="birthdayDate" class="form-label">Birthday</label>
+                    <input th:field="*{dateOfBirth}"  type="date" min='1918-01-01' max='2018-01-01' class="form-control form-control-lg" id="birthdayDate" required />                   
+                  </div>
+
+                </div>
+                <div class="col-md-6 mb-4">
+
+                  <h6 class="mb-2 pb-1">Gender: </h6>
+                  
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="Male"
+                      value="Male" required />
+                    <label class="form-check-label" for="maleGender">Male</label>
+                  </div>
+
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="Female"
+                      value="Female"  />
+                    <label class="form-check-label" for="femaleGender">Female</label>
+                  </div>
+
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="Other"
+                      value="Other" />
+                    <label class="form-check-label" for="otherGender">Other</label>
+                  </div>
+                
+                <script type="text/javascript">
+               			 var gender = "[[${userDetailInfor.gender}]]";
+                </script>
+
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4 pb-2">
+
+                  <div class="form-outline">
+                    <label class="form-label" for="emailAddress">Email</label>
+                    <input th:field="*{emailDetail}" type="email" id="emailAddress" class="form-control form-control-lg" readonly="readonly"/>
+                  </div>
+
+                </div>
+                <div class="col-md-6 mb-4 pb-2">
+
+                  <div class="form-outline">
+                    <label class="form-label" for="phoneNumber">Phone Number</label>
+                    <input th:field="*{phoneNumber}" type="tel" id="phoneNumber" class="form-control form-control-lg" />
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-12">
+
+                  <div class="form-outline">
+                   <label class="form-label" for="address">Address</label>
+                    <input th:field="*{address}" type="text" id="address" class="form-control form-control-lg" />                  
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row">
+              
+               <div class="col-12">
+
+                  <div class="form-outline">
+                   <label class="form-label" for="address">Country</label>
+              
+              <select class="form-select" aria-label="Disabled select example" name="country">
+				
+				<option id="America" value="America">America</option>
+				<option id="Argentina" value="Argentina">Argentina</option>	
+				<option id="China" value="China">China</option>
+				<option id="India" value="India">India</option>							
+ 				<option id="Japan" value="Japan">Japan</option>
+  				<option id="France" value="France">France</option>
+  				<option id="Portugal" value="Portugal">Portugal</option>
+  				<option id="Viet Nam" value="Viet Nam">Viet Nam</option>
+		
+			</select>
+			
+			 <script type="text/javascript">
+               			 var country = "[[${userDetailInfor.country}]]";
+             </script>
+			
+			 </div>
+                </div>
+              </div>
+              
+
+              <div class="mt-4 pt-2">
+                <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+    
+</html>

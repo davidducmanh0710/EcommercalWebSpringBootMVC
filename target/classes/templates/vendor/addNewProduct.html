@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Add new product</title>
+<meta name="description" content="Sufee Admin - HTML5 Admin Template">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="apple-touch-icon" href="apple-icon.png">
+<link rel="shortcut icon" href="favicon.ico">
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/bootstrap/dist/css/bootstrap.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/font-awesome/css/font-awesome.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/themify-icons/css/themify-icons.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/flag-icon-css/css/flag-icon.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/selectFX/css/cs-skin-elastic.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/adminCss/vendors/jqvmap/dist/jqvmap.min.css}">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+	integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+<link rel="stylesheet"
+	th:href="@{/public/resources/css/adminCss/assets/css/style.css}">
+
+<link
+	href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800'
+	rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/public/resources/css/vendor/main.css}">
+
+</head>
+<body>
+
+	<aside th:replace="common/vendorLeftPanel :: left-panel-common" />
+
+	<div id="right-panel" class="right-panel">
+
+		<section class="vh-100" style="background-color: #2779e2;">
+			<div class="container h-100">
+				<form th:object="${mul}" th:action="@{/addNewProduct}" method="POST"
+					enctype="multipart/form-data">
+					<div
+						class="row d-flex justify-content-center align-items-center h-100">
+						<div class="col-xl-9">
+
+							<h1 class="text-white mb-4">Basic information</h1>
+
+							<div class="card" style="border-radius: 15px;">
+								<div class="card-body">
+
+
+
+									<div class="row align-items-center py-3">
+
+										<div class="col-md-3 ps-5">
+
+											<h6 class="mb-0">Upload Image :</h6>
+
+										</div>
+
+										<div class="col-md-9 pe-5">
+
+											<input required name="file" accept="image/*"
+												class="form-control form-control-lg" id="formFileLg"
+												type="file" />
+											<div class="small text-muted mt-2">Upload your
+												product's image</div>
+
+										</div>
+									</div>
+
+									<hr class="mx-n3">
+
+
+									<div class="row align-items-center pt-4 pb-3">
+										<div class="col-md-3 ps-5">
+
+											<h6 class="mb-0">Categories :</h6>
+
+										</div>
+										<div class="col-md-9 pe-5" style="width: 100%;">
+
+											<select class="form-select"
+												aria-label="Disabled select example" name="category"
+												style="width: 100%;">
+												<option th:each="tempCat : ${categories}"
+													th:value="${tempCat.name}" th:text="${tempCat.name}"></option>
+											</select>
+
+										</div>
+									</div>
+
+									<hr class="mx-n3">
+
+									<div class="row align-items-center py-3">
+										<div class="col-md-3 ps-5">
+
+											<h6 class="mb-0">Full name</h6>
+
+										</div>
+										<div class="col-md-9 pe-5">
+
+											<input name="fullName" type="text"
+												class="form-control form-control-lg" />
+
+										</div>
+									</div>
+
+									<div class="row align-items-center py-3">
+										<div class="col-md-3 ps-5">
+
+											<h6 class="mb-0">Description</h6>
+
+										</div>
+										<div class="col-md-9 pe-5">
+
+											<textarea name="description" class="form-control" rows="3"
+												placeholder="Description your product"></textarea>
+
+										</div>
+									</div>
+									
+									<hr class="mx-n3">
+
+									<div class="row align-items-center py-3">
+										<div class="col-md-3 ps-5">
+
+											<h6 class="mb-0">Price</h6>
+
+										</div>
+										<div class="col-md-9 pe-5">
+
+											<input name="price" type="text"
+												class="form-control form-control-lg" />
+
+										</div>
+									</div>
+									
+
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+					<div
+						class="row d-flex justify-content-center align-items-center h-100">
+						<div class="col-xl-9">
+
+							<h1 class="text-white mb-4">Detail information</h1>
+
+							<div class="card" style="border-radius: 15px;">
+								<div class="card-body">
+								
+								<div class="col-md-3 ps-5">
+
+											<h6 class="mb-0">Origin :</h6>
+
+										</div>
+								
+								<div class="col-md-9 pe-5" style="width: 100%;">
+
+											<select class="form-select"
+												aria-label="Disabled select example" name="origin"
+												style="width: 100%;">
+												<option th:each="tempOrigin : ${origins}"
+													th:value="${tempOrigin.name}" th:text="${tempOrigin.name}"></option>
+											</select>
+
+										</div>
+								
+								</div>
+								
+															
+							</div>
+						</div>
+
+					</div>
+					<footer>
+										<!-- Your footer content -->
+									</footer>
+
+									<div class="fixed-div shadow-lg">
+										<!-- Content of the fixed div -->
+
+										<div class="px-5 py-4 col-11 text-right">
+											<button class="btn btn-danger btn-lg mx-2">Cancel</button>
+											<button type="submit" class="btn btn-primary btn-lg">Add
+												new product</button>
+										</div>
+									</div>
+				</form>
+			</div>
+
+
+		</section>
+	</div>
+
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/jquery/dist/jquery.min.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/popper.js/dist/umd/popper.min.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+	<script th:src="@{/public/resources/css/adminCss/assets/js/main.js}"></script>
+
+
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/chart.js/dist/Chart.bundle.min.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/assets/js/dashboard.js}"></script>
+	<script th:src="@{/public/resources/css/adminCss/assets/js/widgets.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/jqvmap/dist/jquery.vmap.min.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js}"></script>
+	<script
+		th:src="@{/public/resources/css/adminCss/vendors/jqvmap/dist/maps/jquery.vmap.world.js}"></script>
+	<script>
+        (function($) {
+            "use strict";
+
+            jQuery('#vmap').vectorMap({
+                map: 'world_en',
+                backgroundColor: null,
+                color: '#ffffff',
+                hoverOpacity: 0.7,
+                selectedColor: '#1de9b6',
+                enableZoom: true,
+                showTooltip: true,
+                values: sample_data,
+                scaleColors: ['#1de9b6', '#03a9f5'],
+                normalizeFunction: 'polynomial'
+            });
+        })(jQuery);
+    </script>
+
+</body>
+</html>
