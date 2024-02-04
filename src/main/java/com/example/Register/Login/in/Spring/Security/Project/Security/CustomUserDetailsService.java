@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -18,9 +19,11 @@ import com.example.Register.Login.in.Spring.Security.Project.Repository.UserRepo
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-
+	
+	
     private UserRepository userRepository;
-
+    
+    @Autowired
     public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -48,7 +51,7 @@ public class CustomUserDetailsService implements UserDetailsService {
       if (user1 != null && user1.isEnabled() ) {
           return new org.springframework.security.core.userdetails.User( user1.getEmail(),
                   user1.getPassword(),
-                  mapRolesToAuthorities(user1.getRoles()));
+                  mapRolesToAuthorities(user1.getRoles())); // Tạo nhanh 1 User mà ko cần phải implement
       }else if (user2 != null && user2.isEnabled()) { 
     	  return new org.springframework.security.core.userdetails.User( user2.getEmail(),
                   user2.getPassword(),

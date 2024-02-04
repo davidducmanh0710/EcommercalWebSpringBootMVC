@@ -32,7 +32,7 @@ public class Categories {
 	private Long id ;
 	
 	
-	@Column(name = "category_name" , unique = true)
+	@Column(name = "category_name")
 	private String name;
 	
 	@OneToMany(fetch = FetchType.LAZY , cascade = CascadeType.ALL , mappedBy = "category")

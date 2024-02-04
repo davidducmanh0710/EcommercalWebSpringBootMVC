@@ -6,12 +6,21 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolderStrategy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,6 +38,8 @@ import com.example.Register.Login.in.Spring.Security.Project.Entity.UserDetail_I
 import com.example.Register.Login.in.Spring.Security.Project.Entity.Utility;
 import com.example.Register.Login.in.Spring.Security.Project.PasswordSecurity.PasswordResetCodeAndToken;
 import com.example.Register.Login.in.Spring.Security.Project.PasswordSecurity.PasswordValidator;
+import com.example.Register.Login.in.Spring.Security.Project.Repository.UserRepository;
+import com.example.Register.Login.in.Spring.Security.Project.Security.CustomUserDetailsService;
 import com.example.Register.Login.in.Spring.Security.Project.Service.UserService;
 import com.example.Register.Login.in.Spring.Security.Project.Service.PasswordResetCodeAndToken_Service;
 import com.example.Register.Login.in.Spring.Security.Project.Service.ProductService;
@@ -36,7 +47,9 @@ import com.example.Register.Login.in.Spring.Security.Project.Service.UserDetail_
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import net.bytebuddy.utility.RandomString;
@@ -52,12 +65,14 @@ public class WebController {
 	private JavaMailSender mailSender;
 	private HttpSession httpSession;
 	private ProductService productService;
+	private SecurityContextRepository securityContextRepository;
+	private UserDetailsService customUserDetailsService;
 
-	
-
+	@Autowired
 	public WebController(UserService userService, UserDetail_Information_Service userDetail_Information_Service,
 			PasswordResetCodeAndToken_Service passService, PasswordEncoder passwordEncoder, JavaMailSender mailSender,
-			HttpSession httpSession, ProductService productService) {
+			HttpSession httpSession, ProductService productService,
+			SecurityContextRepository securityContextRepository, UserDetailsService customUserDetailsService) {
 		super();
 		this.userService = userService;
 		this.userDetail_Information_Service = userDetail_Information_Service;
@@ -66,7 +81,10 @@ public class WebController {
 		this.mailSender = mailSender;
 		this.httpSession = httpSession;
 		this.productService = productService;
+		this.securityContextRepository = securityContextRepository;
+		this.customUserDetailsService = customUserDetailsService;
 	}
+	
 
 	@GetMapping("/login")
 	public String showSignInForm() {
@@ -90,10 +108,10 @@ public class WebController {
 			model.addAttribute("isVender", "true");
 		else
 			model.addAttribute("isVender", "false");
-		
+
 		List<Products> products = productService.findAllProducts();
 		model.addAttribute("products", products);
-		
+
 		return "index";
 	}
 
@@ -161,7 +179,8 @@ public class WebController {
 
 		user.setPasswordRCAT(passwordRCAT);
 
-		// passService.save(passwordRCAT); // đã set user.setPasswordRCAT(passwordRCAT); nên ko cần save
+		// passService.save(passwordRCAT); // đã set user.setPasswordRCAT(passwordRCAT);
+		// nên ko cần save
 
 		userService.saveUser2(user);
 
@@ -174,7 +193,8 @@ public class WebController {
 	@PostMapping("/information-register/saveDetailUsers")
 	public String saveDetailUsers(@ModelAttribute("userDto") UserDto userDto,
 			@ModelAttribute("userDetail") UserDetail_Information userDetail,
-			@RequestParam("inlineRadioOptions") String choice, @RequestParam("country") String country) {
+			@RequestParam("inlineRadioOptions") String choice, @RequestParam("country") String country,
+			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException {
 
 		UserDetail_Information udt = userDetail_Information_Service.findUserDetailByEmailDetail(userDto.getEmail());
 
@@ -197,14 +217,31 @@ public class WebController {
 
 		userDetail_Information_Service.saveDetailUsers(udt);
 
-		return "redirect:/register-form?success";
-	}
+		// auto login after register
+		
+		
+	    var userDetails = customUserDetailsService.loadUserByUsername(userDto.getEmail());
 
-//    @GetMapping("/user") 
-//    public String showUserHtml() { 
-//    	
-//    	return "/users/users";
-//    }
+
+		Authentication authenticatedUser = new UsernamePasswordAuthenticationToken(userDetails,	
+			      userDetails.getPassword(),
+			      userDetails.getAuthorities());
+
+		SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
+
+		SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
+
+		SecurityContext securityContext = SecurityContextHolder.getContextHolderStrategy().createEmptyContext();
+		securityContext.setAuthentication(authenticatedUser);
+		
+		securityContextHolderStrategy.setContext(securityContext); // stack overflow chỉ vậy :D , cmt đi vẫn chạy đc
+
+		securityContextRepository.saveContext(securityContext, httpServletRequest, httpServletResponse);
+
+		return "redirect:/user";
+		
+
+	}
 
 	@GetMapping("/user/information-users")
 	public String showDetailUserProfile(Model model) {
@@ -549,10 +586,10 @@ public class WebController {
 		}
 
 	}
-	
+
 	@GetMapping("/user/bag")
 	public String showBagForm(Model model) {
-		
+
 		return "users/bag";
 	}
 

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import com.example.Register.Login.in.Spring.Security.Project.MyRequestBag.Bag;
 import com.example.Register.Login.in.Spring.Security.Project.MyRequestBag.BagItems;
 import com.example.Register.Login.in.Spring.Security.Project.MyRequestBag.MyRequestData;
+import com.example.Register.Login.in.Spring.Security.Project.Utility.CountBag;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -28,7 +29,7 @@ public class BagRESTController {
 	}
 
 	@PostMapping("/addToBag")
-	public Map<String, BagItems> addToBag(@RequestBody MyRequestData requestData, HttpSession httpSession,
+	public Map<String, Long> addToBag(@RequestBody MyRequestData requestData, HttpSession httpSession,
 			Model model) {
 		Bag bag = (Bag) httpSession.getAttribute("bag");
 		if (bag == null)
@@ -50,7 +51,8 @@ public class BagRESTController {
 		}
 
 		httpSession.setAttribute("bag", bag);
-		return bag.getItems();
+		bag = (Bag) httpSession.getAttribute("bag");
+		return CountBag.countCart(bag).getTotalProductBag().getTotalProductBagMap();
 	}
 
 }

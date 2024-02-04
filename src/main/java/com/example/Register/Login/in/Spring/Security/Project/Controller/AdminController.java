@@ -208,8 +208,12 @@ public class AdminController {
 		
 		Categories category = categoriesService.findById(category_id);
 		category.setName(category_name);
-		category.setParentId(parent_category_id);
-		categoriesService.saveCategories(category);
+		if (parent_category_id != 0) {
+			category.setParentId(parent_category_id);
+
+		} else {
+			category.setParentId(null);
+		}		categoriesService.saveCategories(category);
 		
 		checked = "editSuccess";
 

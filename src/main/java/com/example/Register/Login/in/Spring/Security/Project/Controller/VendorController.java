@@ -31,6 +31,7 @@ import com.example.Register.Login.in.Spring.Security.Project.Service.OriginServi
 import com.example.Register.Login.in.Spring.Security.Project.Service.ProductDetailService;
 import com.example.Register.Login.in.Spring.Security.Project.Service.ProductService;
 import com.example.Register.Login.in.Spring.Security.Project.Service.UserService;
+import com.example.Register.Login.in.Spring.Security.Project.Utility.UploadToCloudinary;
 
 @Controller
 public class VendorController {
@@ -131,7 +132,7 @@ public class VendorController {
 
 		imageFile.delete(); // xóa ảnh local
 
-		return "/vendor/vendor";
+		return "redirect:/vendor/product/all";
 	}
 
 	@GetMapping("/vendor/product/all/deleteProducts/{productID}")

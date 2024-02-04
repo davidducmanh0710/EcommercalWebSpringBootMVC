@@ -1,0 +1,121 @@
+* { 
+	font-family:'Arial';
+}
+
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    animation: fadeIn linear 0.2s;
+    display: none;
+}
+
+.model-container {
+    width: 55%;
+    height: 55%;
+    background-color: white;
+    color: black;
+    position: absolute;
+    top: 10%;
+    left: 25%;
+    font-size: 20px;
+}
+
+.model-header { 
+	width: 100%;
+	height: 15%;
+}
+
+.model-body { 
+    width: 100%;
+    height: 85%;
+}
+
+.model-body-left { 
+    width: 100%;
+    height: 100%;
+    border-color: transparent black transparent transparent;
+    border-style: solid;
+}
+
+.model-body-right { 
+    width: 100%;
+    height: 100%;
+    margin-left: 3%;
+   
+}
+
+.model-body-right-top { 
+    width: 100%;
+    height: 30%;
+    border-color: transparent transparent black transparent;
+    border-style: solid;
+}
+
+.model-body-right-bottom { 
+    width: 100%;
+    height: 70%;
+}
+
+.closeBtDiv {
+    position: inherit;
+    top: 0;
+    right: 0;
+    width: 7%;
+    height: 8%;
+    border: none;
+}
+
+.closeBt{
+	width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.closeBt:hover { 
+	cursor: pointer;
+}
+
+.show { 
+    display: block;
+}
+
+.model-body-left-left { 
+	width : 50%;
+	height: 100%;
+	
+}
+
+
+.model-body-left-right{ 
+	width : 50%;
+	height: 100%;
+	padding-left: 10%;
+}
+
+.model-body-left-right .p-name { 
+	font-size: 110%;
+}
+
+.p-image-div { 
+	width: 100%;
+	height: 40%;
+	display: block;
+}
+
+.p-image {
+	width : 100%;
+	height: 100%;
+	
+}
+
+.p-des { 
+	font-size: 70%;
+}
+
