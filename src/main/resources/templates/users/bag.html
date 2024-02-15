@@ -2,37 +2,48 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <aside th:replace="~{common/header :: head}" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+	integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" th:href="@{/public/resources/css/bag/bag.css}">
+
 
 </head>
 <body>
 
 	<aside th:replace="~{common/header :: header}" />
-	
-	<section style="margin-top : 10%;" class="section_gap">
+
+	<section style="margin-top: 10%;" class="section_gap">
 		<div class="container">
 			<h1 class="text-center text-info mt-5">GIỎ HÀNG</h1>
 
 			<table class="table">
 				<thead>
 					<tr>
-						<th>Mã sản phẩm</th>
-						<th>Tên sản phẩm</th>
-						<th>Đơn giá</th>
-						<th>Số lượng</th>
+						<th class="th-bag-item">Mã sản phẩm</th>
+						<th class="th-bag-item">Tên sản phẩm</th>
+						<th class="th-bag-item">Đơn giá</th>
+						<th class="th-bag-item">Số lượng</th>
 						<th></th>
 					</tr>
 				</thead>
 				<div th:if="${session.containsKey('bag') and session.bag != null}">
-				<tbody>
+					<tbody>
+						
+						<tr th:each="entry : ${session.bag.items}" th:id="'bagItem' + ${entry.value.id}">
+							<td class="td-bag-item" th:text="${entry.value.id}"></td>
+							<td class="td-bag-item" th:text="${entry.value.name}"></td>
+							<td class="td-bag-item" th:text="${entry.value.price}"></td>
+							<td class="td-bag-item"><input class="product-quantity"
+								th:value="${entry.value.quantity}" type="number"
+								th:onblur="updateBag( [[${entry.value.id}]] , this )" /></td>
+							<td class="td-bag-item"><i
+								th:onclick="deleteBag([[${entry.value.id}]], this)"
+								class="delete-icon-itemBag fa-solid fa-trash"></i></td>
+						</tr>
 
-					<tr th:each="entry : ${session.bag.items}">
-						<!-- entry.key là key của Map, entry.value là giá trị tương ứng (đối tượng BagItems) -->
-						<td th:text="${entry.value.id}"></td>
-						<td th:text="${entry.value.name}"></td>
-						<td th:text="${entry.value.price}"></td>
-						<td th:text="${entry.value.quantity}"></td>
-					</tr>
-				</tbody>
+					</tbody>
 				</div>
 			</table>
 		</div>

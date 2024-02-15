@@ -24,7 +24,6 @@ import com.example.Register.Login.in.Spring.Security.Project.Entity.Origin;
 import com.example.Register.Login.in.Spring.Security.Project.Entity.ProductDetail_Infor;
 import com.example.Register.Login.in.Spring.Security.Project.Entity.Products;
 import com.example.Register.Login.in.Spring.Security.Project.Entity.User;
-import com.example.Register.Login.in.Spring.Security.Project.MultiFormProcessing.MultiFormAddProductProcessing;
 import com.example.Register.Login.in.Spring.Security.Project.Service.CategoriesService;
 import com.example.Register.Login.in.Spring.Security.Project.Service.CloudinaryService;
 import com.example.Register.Login.in.Spring.Security.Project.Service.OriginService;
@@ -89,10 +88,7 @@ public class VendorController {
 		List<Categories> categories = categoriesService.findAllCategories();
 		List<Origin> origins = originService.findAllOrigin();
 
-		MultiFormAddProductProcessing mul = new MultiFormAddProductProcessing(new Products(),
-				new ProductDetail_Infor());
-
-		model.addAttribute("mul", mul);
+		
 		model.addAttribute("categories", categories);
 		model.addAttribute("origins", origins);
 

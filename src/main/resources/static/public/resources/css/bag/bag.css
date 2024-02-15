@@ -1,0 +1,20 @@
+.product-quantity {
+	width: 50%;
+	text-align: center;
+}
+
+.td-bag-item {
+	text-align: center;
+}
+
+.th-bag-item {
+	text-align: center;
+}
+
+.delete-icon-itemBag {
+	color: red;
+}
+
+.delete-icon-itemBag:hover {
+	cursor: pointer;
+}

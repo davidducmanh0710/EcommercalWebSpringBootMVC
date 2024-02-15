@@ -1,3 +1,15 @@
 a:hover {
       cursor: pointer; 
 }
+
+.count-product-bag { 
+	position: absolute;
+	border-radius: 100%;
+	width: 3%;
+	height: 30%;
+	top : 0;
+	right: 0;
+	color : white;
+	text-align: center;
+	
+}

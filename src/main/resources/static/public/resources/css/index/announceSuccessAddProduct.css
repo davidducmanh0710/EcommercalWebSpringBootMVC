@@ -96,7 +96,7 @@
 .model-body-left-right{ 
 	width : 50%;
 	height: 100%;
-	padding-left: 10%;
+	padding: 0 10% 0 10%;
 }
 
 .model-body-left-right .p-name { 
@@ -117,5 +117,18 @@
 
 .p-des { 
 	font-size: 70%;
+}
+
+.total-cost-label{
+	
+}
+
+.total-cost-value { 
+	padding : 0 10% 0 0 ;
+}
+
+.model-body-right-top .count-product-bag {
+	color : black;
+	position: relative;
 }
 

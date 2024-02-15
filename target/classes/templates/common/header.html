@@ -5,7 +5,7 @@
 <head>
 
 <div th:fragment="head">
-	<title>Footwear - Free Bootstrap 4 Template by Colorlib</title>
+	<title>Footwear</title>
 	<meta charset="utf-8">
 	<meta name="viewport"
 		content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -96,9 +96,9 @@
 		th:src="@{/public/resources/shoes-master/js/jquery.stellar.min.js}"></script>
 	<!-- Main -->
 	<script defer th:src="@{/public/resources/shoes-master/js/main.js}"></script>
-	<script defer th:src="@{/public/resources/js/bag/bag.js}"></script>
 	<script defer th:src="@{/public/resources/js/index/index.js}"></script>
-
+	<script defer th:src="@{/public/resources/js/bag/bag.js}"></script>
+	
 
 </div>
 
@@ -109,7 +109,7 @@
 	<nav class="colorlib-nav fixed-top bg-white" role="navigation">
 		<div class="top-menu">
 			<div class="container">
-				
+
 				<div class=" d-flex flex-row">
 					<div class="col-sm-10 text-left menu-1">
 
@@ -130,7 +130,22 @@
 							<li><a th:href="@{#}">About</a></li>
 							<li><a th:href="@{#}">Contact</a></li>
 							<li class="cart"><a th:href="@{/user/bag}"><i
-									class="icon-shopping-cart"></i> Bag </a></li>
+									class="icon-shopping-cart"></i> Bag </a> <span
+								class="count-product-bag bg-danger">
+									<div
+										th:if="${session.containsKey('bag') and session.bag != null}">
+
+										<span
+											th:text="${session.bag.totalProductBag.totalProductBagMap['totalQuantity']}">
+										</span>
+
+									</div>
+									<div
+										th:unless="${session.containsKey('bag') and session.bag != null}">
+										<span> 0 </span>
+									</div>
+
+							</span></li>
 
 							<li class="has-dropdown"><a th:href="@{#}">Vendor</a>
 								<ul class="dropdown">
@@ -195,8 +210,8 @@
 			</div>
 		</div>
 	</nav>
-	
-	<div style="margin : 30px 0 30px 0"></div>
+
+	<div style="margin: 30px 0 30px 0"></div>
 </div>
 
 

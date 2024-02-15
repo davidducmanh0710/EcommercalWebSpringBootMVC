@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -48,6 +47,7 @@ import com.example.Register.Login.in.Spring.Security.Project.Service.UserDetail_
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -135,8 +135,7 @@ public class WebController {
 	}
 
 	@PostMapping("/register-form/save")
-	public String registration(@Valid @ModelAttribute("userDto") UserDto userDto, BindingResult result, Model model,
-			HttpServletRequest httpServletRequest) {
+	public String registration(@Valid @ModelAttribute("userDto") UserDto userDto, BindingResult result, Model model) {
 
 		User existingUser = userService.findUserByEmail(userDto.getEmail());
 
@@ -557,7 +556,14 @@ public class WebController {
 	// active-vendor
 
 	@GetMapping("/user/active-vendor")
-	public String showActiveVendor(Model model) {
+	public String showActiveVendor(Model model , HttpSession httpSession) {
+		
+		Boolean error1 = (Boolean) httpSession.getAttribute("error1111");
+        if (error1 != null && error1) {
+          model.addAttribute("error1111", true);
+          httpSession.removeAttribute("error1111"); // Xóa giá trị sau khi sử dụng     
+        }
+		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findUserByEmail(authentication.getName());
 		if (user.isVender())
@@ -567,8 +573,11 @@ public class WebController {
 	}
 
 	@PostMapping("/active-vendor")
-	public String checkPassActiveVendor(Model model, @RequestParam("password") String password) {
-
+	public String checkPassActiveVendor(Model model, HttpServletRequest httpServletRequest
+			,HttpSession httpSession) {
+		
+		String password = httpServletRequest.getParameter("password");
+		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findUserByEmail(authentication.getName());
 
@@ -581,8 +590,8 @@ public class WebController {
 
 			return "redirect:/login?logout&vendor";
 		} else {
-
-			return "redirect:/user/active-vendor?error1";
+			 httpSession.setAttribute("error1111", true);			
+			 return "redirect:/user/active-vendor";
 		}
 
 	}

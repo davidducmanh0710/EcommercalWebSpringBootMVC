@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
-public class MyRequestData {
+public class MyRequestItemBagData {
 	private Long id;
 	private String name;
 	private Float price;

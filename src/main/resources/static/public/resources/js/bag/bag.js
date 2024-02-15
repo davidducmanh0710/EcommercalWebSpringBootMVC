@@ -1,6 +1,10 @@
+
+var items = document.querySelectorAll(".count-product-bag");
+var prices = document.querySelector(".total-cost-value")
+
 function addToBag(id, name, price) {
 	// Gửi yêu cầu POST đến một endpoint trên server
-	fetch('/api/api2/addToBag',
+	fetch('/api/addToBag',
 		{
 			method: 'post',
 			body: JSON.stringify({
@@ -13,6 +17,71 @@ function addToBag(id, name, price) {
 			}
 		}).then(function(res) {
 			return res.json();  //chuyển đối tượng phản hồi thành đối tượng JSON bằng cách sử dụng phương thức json() của đối tượng phản hồi.
-		}).then(data => console.log(data))
+		}).then(function(data) // data là lấy từ body ở trên nè
+		{
+			console.log(data)
+			for (let item of items)
+				item.innerText = data.totalQuantity
+
+			prices.innerText = data.totalPrice
+		})
 		.catch(error => console.error("Error:", error));
 }
+
+function updateBag(id, obj) {
+	obj.disabled = true;
+
+	fetch(`/api/updateToBag/${id}`, {
+		method: "PUT",
+		body: JSON.stringify({
+			"quantity": obj.value
+		}),
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	}).then(function(res) {
+		return res.json();
+	}).then(function(data) {
+		obj.disabled = false;
+		console.log(data)
+		for (let item of items)
+			item.innerText = data.totalQuantity
+
+	}).catch(error => console.error("Error:", error));
+}
+
+
+
+function deleteBag(id, obj) {
+	obj.disbaled = true;
+
+	if (confirm("Are you sure to delete this item ? ") == true) {
+		fetch(`/api/deleteToBag/${id}`, {
+			method: "DELETE",
+		}).then(function(res) {
+			return res.json();
+		}).then(function(data) {
+			obj.disbaled = false;
+
+			console.log(data)
+			for (let item of items)
+				item.innerText = data.totalQuantity
+
+			var bagItemX = document.querySelector(`#bagItem${id}`)
+			bagItemX.style.display = "none";
+		}).catch(error => console.error("Error:", error));
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

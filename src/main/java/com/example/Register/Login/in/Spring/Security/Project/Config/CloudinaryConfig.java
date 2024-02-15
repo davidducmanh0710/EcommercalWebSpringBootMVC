@@ -20,5 +20,5 @@ public class CloudinaryConfig {
     @Bean
     public Cloudinary cloudinary() {
         return new Cloudinary("cloudinary://" + apiKey + ":" + apiSecret + "@" + cloudName);
-    }
+    } // phải gọi lên vì Constructor của Cloudinary ko nằm trong package của project này :D
 }
