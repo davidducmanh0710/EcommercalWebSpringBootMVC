@@ -25,7 +25,7 @@ public class BeanConfig {
 	}
 
 	@Bean
-	@SessionScope
+	@SessionScope // chỉ bị đổi địa chỉ khi KHÁC SESSION , Còn cùng 1 NGƯỜI DÙNG SỬ DỤNG LẠI SESSION CỦA CHÍNH MÌNH THÌ KO ĐỔI
 	Map<String, BagItems> itemsMapBean() {
 		return new HashMap<>();
 	}
@@ -36,8 +36,10 @@ public class BeanConfig {
 
 	@Bean
 	@SessionScope
-	public Map<String, Number> totalProductBagMapBean() {
+	public static Map<String, Number> totalProductBagMapBean() {
 		return new HashMap<>(); // này là interface mới cần nè :D
 	}
+	
+
 
 }
