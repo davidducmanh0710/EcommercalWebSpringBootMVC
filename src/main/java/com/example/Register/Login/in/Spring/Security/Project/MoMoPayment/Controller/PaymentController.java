@@ -9,6 +9,10 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -16,8 +20,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.example.Register.Login.in.Spring.Security.Project.MoMoPayment.Configuration.MoMoConfiguration;
@@ -33,29 +40,30 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
+@Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@SessionScope
 public class PaymentController {
-	
-	
+
 	private MoMoConfiguration momoConfiguration;
-//	private Map<String, Object> dataPayment;
+	private Map<String, Object> dataPayment;
 	private PaymentUtilities paymentUtilities;
 	private ObjectMapper objectMapper;
 	private RestTemplate restTemplate;
-//	private HttpHeaders httpHeaders;
-//	private RedirectView redirectView;
-	
+	private HttpHeaders httpHeaders;
+	private RedirectView redirectView;
+
 	@Autowired
 	public PaymentController(MoMoConfiguration momoConfiguration, PaymentUtilities paymentUtilities,
-			ObjectMapper objectMapper, RestTemplate restTemplate, HttpHeaders httpHeaders, 
-			@Qualifier("dataPaymentBean") Map<String, Object> dataPayment) {
+			ObjectMapper objectMapper, RestTemplate restTemplate, @Qualifier("httpHeadersBean") HttpHeaders httpHeaders,
+			@Qualifier("dataPaymentBean") Map<String, Object> dataPayment, RedirectView redirectView) {
 		super();
 		this.momoConfiguration = momoConfiguration;
-//		this.dataPayment = dataPayment;
+		this.dataPayment = dataPayment;
 		this.paymentUtilities = paymentUtilities;
 		this.objectMapper = objectMapper;
 		this.restTemplate = restTemplate;
-//		this.httpHeaders = httpHeaders;
-//		this.redirectView = redirectView;
+		this.httpHeaders = httpHeaders;
+		this.redirectView = redirectView;
 	}
 
 	@PostMapping("/payment/checkout")
@@ -69,14 +77,13 @@ public class PaymentController {
 			momoConfiguration.setAmount(10000);
 			momoConfiguration.setOrderId(String.valueOf(UUID.randomUUID()));
 			momoConfiguration.setRequestId(String.valueOf(UUID.randomUUID()));
-			
-			System.out.println(momoConfiguration.rawSignature());
-			
+
+//			System.out.println(momoConfiguration.rawSignature());
+
 			String signature = paymentUtilities.signature(momoConfiguration.getSecretKey(),
 					momoConfiguration.rawSignature());
 
-			Map<String, Object> dataPayment = new HashMap<>();
-			System.out.println(System.identityHashCode(dataPayment));
+//			System.out.println(System.identityHashCode(dataPayment));
 
 			dataPayment.put("partnerCode", momoConfiguration.getPartnerCode());
 			dataPayment.put("partnerName", "Test");
@@ -103,12 +110,9 @@ public class PaymentController {
 			// Tạo đoạn Fetch của JS , Post lên đường API của MOMO
 			// để lấy payUrl và QR CODE
 
-			HttpHeaders httpHeaders = new HttpHeaders();
 			httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
 			HttpEntity<String> httpEntity = new HttpEntity<String>(jsonData, httpHeaders);
-
-			System.out.println(httpEntity.getBody());
 
 			// Gửi POST request
 			ResponseEntity<String> responseEntity = restTemplate.exchange(momoConfiguration.getEndpoint(),
@@ -118,17 +122,32 @@ public class PaymentController {
 			if (statusCode == HttpStatus.OK) {
 				// Phản hồi thành công
 				String responseBody = responseEntity.getBody();
+				
+				System.out.println(responseBody);
 				// Xử lý dữ liệu trả về
 				// chuyển hướng đến payUrl
-				
-			
-				return new RedirectView(objectMapper.readTree(responseBody).get("payUrl").asText());
-//				redirectView.setUrl(objectMapper.readTree(responseBody).get("payUrl").asText());
-//				return redirectView;
+
+				redirectView.setUrl(objectMapper.readTree(responseBody).get("payUrl").asText());
+				return redirectView;
 			}
 		}
 
-		 return new RedirectView("http://localhost:710/user");
+		return new RedirectView("http://localhost:710/user");
+	}
+
+	@GetMapping("/payment/result")
+	public String paymentResult(HttpServletRequest httpServletRequest) {
+
+		String resultCode = httpServletRequest.getParameter("resultCode");
+		if (Integer.parseInt(resultCode) == 0) {
+			System.out.println("SUCCESSFULL PAYMENT");
+			return "index";
+		} else if (Integer.parseInt(resultCode) != 0) {
+			System.out.println("FAILED PAYMENT");
+			return "redirect:/user";
+		}
+		System.out.println("NOTHING");
+		return "redirect:/user";
 	}
 
 }

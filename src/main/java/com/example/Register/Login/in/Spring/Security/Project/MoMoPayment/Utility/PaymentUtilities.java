@@ -17,16 +17,6 @@ import org.springframework.web.context.annotation.SessionScope;
 @Component
 public class PaymentUtilities {
 	
-//	@Autowired
-//	private SecretKeySpec secretKeySpec;
-	
-	
-//	public PaymentUtilities(SecretKeySpec secretKeySpec) {
-//		super();
-//		this.secretKeySpec = secretKeySpec;
-//	}
-
-//	@Value("#{secretKeySpec.secretKey}")
 
 	public String signature( String secretKey, String rawSignature)
 			throws NoSuchAlgorithmException, InvalidKeyException, IllegalStateException, UnsupportedEncodingException{
@@ -34,6 +24,7 @@ public class PaymentUtilities {
 		
 		Mac hmacSha256 = Mac.getInstance("HmacSHA256");
 		SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getBytes("UTF-8"), "HmacSHA256");
+	
 		hmacSha256.init(secretKeySpec);
 
 		byte[] signatureBytes = hmacSha256.doFinal(rawSignature.getBytes("UTF-8"));
