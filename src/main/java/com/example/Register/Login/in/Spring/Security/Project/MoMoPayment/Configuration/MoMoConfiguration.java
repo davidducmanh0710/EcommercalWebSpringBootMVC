@@ -42,7 +42,7 @@ public class MoMoConfiguration {
 	@Value("${momo.extraData}")
 	private String extraData;
 
-	private int amount = 0;
+	private int amount;
 
 	private String orderId;
 	private String requestId;

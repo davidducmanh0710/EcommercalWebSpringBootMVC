@@ -9,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class MyRequestQuantityData {
+public class MyRequestQuantityAndPriceData {
 	private Long quantity;
+	private Long price;
 }

@@ -1,6 +1,6 @@
 
 var items = document.querySelectorAll(".count-product-bag");
-var prices = document.querySelector(".total-cost-value")
+var prices = document.querySelectorAll(".total-cost-value")
 
 function addToBag(id, name, price) {
 	// Gửi yêu cầu POST đến một endpoint trên server
@@ -22,8 +22,10 @@ function addToBag(id, name, price) {
 			console.log(data)
 			for (let item of items)
 				item.innerText = data.totalQuantity
-
-			prices.innerText = data.totalPrice
+			
+			
+			for (let price of prices)
+				price.innerText = data.totalPrice
 		})
 		.catch(error => console.error("Error:", error));
 }
@@ -46,6 +48,9 @@ function updateBag(id, obj) {
 		console.log(data)
 		for (let item of items)
 			item.innerText = data.totalQuantity
+		
+		for (let price of prices)
+				price.innerText = data.totalPrice
 
 	}).catch(error => console.error("Error:", error));
 }
@@ -66,9 +71,18 @@ function deleteBag(id, obj) {
 			console.log(data)
 			for (let item of items)
 				item.innerText = data.totalQuantity
-
+				
+			for (let price of prices)
+				price.innerText = data.totalPrice
+				
 			var bagItemX = document.querySelector(`#bagItem${id}`)
 			bagItemX.style.display = "none";
+			
+			if(data.totalQuantity <= 0){
+				var paymentBt_div = document.querySelector('.paymentBt-div')
+				paymentBt_div.style.display = "none"
+			}
+			
 		}).catch(error => console.error("Error:", error));
 	}
 }

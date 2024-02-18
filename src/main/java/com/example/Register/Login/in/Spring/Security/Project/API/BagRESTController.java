@@ -19,7 +19,7 @@ import org.springframework.web.context.annotation.SessionScope;
 import com.example.Register.Login.in.Spring.Security.Project.MyRequestBag.Bag;
 import com.example.Register.Login.in.Spring.Security.Project.MyRequestBag.BagItems;
 import com.example.Register.Login.in.Spring.Security.Project.MyRequestBag.MyRequestItemBagData;
-import com.example.Register.Login.in.Spring.Security.Project.MyRequestBag.MyRequestQuantityData;
+import com.example.Register.Login.in.Spring.Security.Project.MyRequestBag.MyRequestQuantityAndPriceData;
 import com.example.Register.Login.in.Spring.Security.Project.MyRequestBag.TotalProductBag;
 
 import jakarta.servlet.http.HttpSession;
@@ -41,10 +41,10 @@ public class BagRESTController {
 	public Map<String, BagItems> getBag(@RequestBody MyRequestItemBagData requestItemBagData, HttpSession httpSession,
 			Model model) {
 
-		Bag bag = (Bag) httpSession.getAttribute("bag");
+		Bag bag = (Bag) httpSession.getAttribute("bag"); 
 		if (bag == null)
 			bag = this.bag;
-		
+
 		return bag.getItems();
 	}
 
@@ -86,7 +86,7 @@ public class BagRESTController {
 
 	@PutMapping("/updateToBag/{id}")
 	public Map<String, Number> updateBag(@PathVariable String id,
-			@RequestBody MyRequestQuantityData requestQuantityData, HttpSession httpSession) {
+			@RequestBody MyRequestQuantityAndPriceData requestQuantityData, HttpSession httpSession) {
 
 		Bag bag = (Bag) httpSession.getAttribute("bag");
 		if (bag.getItems().containsKey(id)) {

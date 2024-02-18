@@ -50,24 +50,50 @@
 					<tr>
 						<th class="th-bag-item font-weight-bold">Tổng cộng :</th>
 						<th class="th-bag-item"></th>
-						<th class="th-bag-item font-weight-bold">100000</th>
-						<th class="th-bag-item font-weight-bold">6</th>
+						<td class="th-bag-item font-weight-bold total-cost-value"><div
+								th:if="${session.containsKey('bag') and session.bag != null}">
+
+								<span
+									th:text="${session.bag.totalProductBag.totalProductBagMap['totalPrice']}">
+								</span>
+
+							</div>
+							<div
+								th:unless="${session.containsKey('bag') and session.bag != null}">
+								<span> 0 </span>
+							</div></td>
+						<td class="th-bag-item font-weight-bold"><div
+								th:if="${session.containsKey('bag') and session.bag != null}">
+
+								<span class="count count-product-bag"
+									th:text="${session.bag.totalProductBag.totalProductBagMap['totalQuantity']}">
+								</span>
+
+							</div>
+							<div
+								th:unless="${session.containsKey('bag') and session.bag != null}">
+								<span> 0 </span>
+							</div></td>
 						<th></th>
 					</tr>
 				</tfoot>
 			</table>
 
+			<div th:if="${session.containsKey('bag') and session.bag != null and session.bag.totalProductBag.totalProductBagMap['totalQuantity'] > 0}">
 
-			<div class="paymentBt-div">
-				<form class="form-momo-payment" th:action="@{/payment/checkout}" method="POST">
-					<button value="Momo" name="payUrl" class="button-momo-payment" type="submit">
-						<div class="icon-momo-div">
-							<img class="icon-momo-image"
-								th:src="@{https://res.cloudinary.com/diwxda8bi/image/upload/v1708071091/momo_payment_v8j9pf.png}">
-						</div>
-						<div class="text-payment">MoMo Payment</div>
-					</button>
-				</form>
+				<div class="paymentBt-div">
+					<form class="form-momo-payment" th:action="@{/payment/checkout}"
+						method="POST">
+						<button value="Momo" name="payUrl" class="button-momo-payment"
+							type="submit">
+							<div class="icon-momo-div">
+								<img class="icon-momo-image"
+									th:src="@{https://res.cloudinary.com/diwxda8bi/image/upload/v1708071091/momo_payment_v8j9pf.png}">
+							</div>
+							<div class="text-payment">MoMo Payment</div>
+						</button>
+					</form>
+				</div>
 			</div>
 
 		</div>

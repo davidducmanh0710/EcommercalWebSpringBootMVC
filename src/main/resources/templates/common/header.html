@@ -98,7 +98,7 @@
 	<script defer th:src="@{/public/resources/shoes-master/js/main.js}"></script>
 	<script defer th:src="@{/public/resources/js/index/index.js}"></script>
 	<script defer th:src="@{/public/resources/js/bag/bag.js}"></script>
-	
+
 
 </div>
 
@@ -131,19 +131,12 @@
 							<li><a th:href="@{#}">Contact</a></li>
 							<li class="cart"><a th:href="@{/user/bag}"><i
 									class="icon-shopping-cart"></i> Bag </a> <span
-								class="count-product-bag bg-danger">
-									<div
-										th:if="${session.containsKey('bag') and session.bag != null}">
-
-										<span
-											th:text="${session.bag.totalProductBag.totalProductBagMap['totalQuantity']}">
-										</span>
-
-									</div>
-									<div
-										th:unless="${session.containsKey('bag') and session.bag != null}">
-										<span> 0 </span>
-									</div>
+								class="icon-bag count-product-bag bg-danger"> <span
+									th:if="${session.containsKey('bag') and session.bag != null}"
+									th:text="${session.bag.totalProductBag.totalProductBagMap['totalQuantity']}">
+								</span> <span
+									th:unless="${session.containsKey('bag') and session.bag != null}">
+										0 </span>
 
 							</span></li>
 

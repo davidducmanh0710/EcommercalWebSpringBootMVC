@@ -2,7 +2,7 @@ a:hover {
       cursor: pointer; 
 }
 
-.count-product-bag { 
+span.icon-bag.count-product-bag { 
 	position: absolute;
 	border-radius: 100%;
 	width: 3%;

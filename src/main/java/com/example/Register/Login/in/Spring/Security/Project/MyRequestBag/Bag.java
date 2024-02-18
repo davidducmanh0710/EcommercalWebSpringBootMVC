@@ -20,7 +20,7 @@ import lombok.Setter;
 public class Bag {
 	
 	private Map<String, BagItems> items;
-	private TotalProductBag totalProductBag; // hướng đối tượng cho màu mè thui chứ quăng thẳng Map<String,Long> vào
+	private TotalProductBag totalProductBag; // hướng đối tượng cho màu mè thui chứ quăng thẳng Map<String,Number> vào
 	// nhanh hơn =))
 	
 	public Bag(Map<String, BagItems> items) {
@@ -49,7 +49,7 @@ public class Bag {
 		Map<String, Number> totalProductBagMap = totalProductBag.getTotalProductBagMap();
 		totalProductBagMap.put("totalQuantity", totalQuantity);
 		totalProductBagMap.put("totalPrice", totalPrice);
-		// cách xài SpringBoot
+		// cách xài IoC
 		
 		totalProductBag.setTotalProductBagMap(totalProductBagMap);
 		

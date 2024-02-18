@@ -29,6 +29,8 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.example.Register.Login.in.Spring.Security.Project.MoMoPayment.Configuration.MoMoConfiguration;
 import com.example.Register.Login.in.Spring.Security.Project.MoMoPayment.Utility.PaymentUtilities;
+import com.example.Register.Login.in.Spring.Security.Project.MyRequestBag.Bag;
+import com.example.Register.Login.in.Spring.Security.Project.MyRequestBag.BagItems;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -38,6 +40,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -51,10 +54,12 @@ public class PaymentController {
 	private RestTemplate restTemplate;
 	private HttpHeaders httpHeaders;
 	private RedirectView redirectView;
+	private HttpSession httpSession;
 
 	@Autowired
-	public PaymentController(MoMoConfiguration momoConfiguration, PaymentUtilities paymentUtilities,
-			ObjectMapper objectMapper, RestTemplate restTemplate, @Qualifier("httpHeadersBean") HttpHeaders httpHeaders,
+	public PaymentController(HttpSession httpSession, MoMoConfiguration momoConfiguration,
+			PaymentUtilities paymentUtilities, ObjectMapper objectMapper, RestTemplate restTemplate,
+			@Qualifier("httpHeadersBean") HttpHeaders httpHeaders,
 			@Qualifier("dataPaymentBean") Map<String, Object> dataPayment, RedirectView redirectView) {
 		super();
 		this.momoConfiguration = momoConfiguration;
@@ -64,6 +69,7 @@ public class PaymentController {
 		this.restTemplate = restTemplate;
 		this.httpHeaders = httpHeaders;
 		this.redirectView = redirectView;
+		this.httpSession = httpSession;
 	}
 
 	@PostMapping("/payment/checkout")
@@ -74,7 +80,11 @@ public class PaymentController {
 
 		if (payUrl != null) {
 
-			momoConfiguration.setAmount(10000);
+			Bag bag = (Bag) httpSession.getAttribute("bag");
+
+			Float price = (Float) bag.getTotalProductBag().getTotalProductBagMap().get("totalPrice");
+
+			momoConfiguration.setAmount(Math.round(price));
 			momoConfiguration.setOrderId(String.valueOf(UUID.randomUUID()));
 			momoConfiguration.setRequestId(String.valueOf(UUID.randomUUID()));
 
@@ -122,7 +132,7 @@ public class PaymentController {
 			if (statusCode == HttpStatus.OK) {
 				// Phản hồi thành công
 				String responseBody = responseEntity.getBody();
-				
+
 				System.out.println(responseBody);
 				// Xử lý dữ liệu trả về
 				// chuyển hướng đến payUrl
@@ -139,15 +149,26 @@ public class PaymentController {
 	public String paymentResult(HttpServletRequest httpServletRequest) {
 
 		String resultCode = httpServletRequest.getParameter("resultCode");
+		Bag bag = (Bag) httpSession.getAttribute("bag");
+		bag.setItems(new HashMap<String, BagItems>()); // nếu ko có dòng này , dù có xóa giá trị 'bag' ở trong cùng 1 session
+														// 1000 lần và tạo mới lại 'bag' thì nó vẫn chứa dữ liệu như
+														// thường (đổi hoàn toàn session thì nói làm gì nữa :D ) 
+		httpSession.removeAttribute("bag");// session chỉ chứa biến bag khi đc nạp dữ liệu , không có vai
+		// trò chứa 1 ĐỐI TƯỢNG chứa dữ liệu , remove biến bag trong session ko có nghĩa
+		// là xóa hoàn toàn dữ liệu ở Map<String, BagItems> items . Vì vậy cần tạo
+		// instance mới cho items luôn
+
 		if (Integer.parseInt(resultCode) == 0) {
 			System.out.println("SUCCESSFULL PAYMENT");
-			return "index";
+
+			return "redirect:/user/bag";
 		} else if (Integer.parseInt(resultCode) != 0) {
 			System.out.println("FAILED PAYMENT");
-			return "redirect:/user";
+			return "redirect:/user/bag";
 		}
 		System.out.println("NOTHING");
-		return "redirect:/user";
+
+		return "redirect:/user/bag";
 	}
 
 }

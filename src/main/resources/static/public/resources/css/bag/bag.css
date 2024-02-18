@@ -68,3 +68,8 @@
 	align-items: center;
 	justify-content: center;
 }
+
+span.count.count-product-bag {
+    position: none;
+    display : block;
+}
